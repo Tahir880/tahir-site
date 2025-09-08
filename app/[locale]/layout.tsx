@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import './globals.css';
+import '../globals.css';
 import {routing} from '@/i18n/routing';
 import {setRequestLocale} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 import NavBar from '@/components/NavBar';
-import Footer from '@/components/Footer';
+import Footer from '../../components/Footer;
 import Script from 'next/script';
 
 export const metadata: Metadata = {
