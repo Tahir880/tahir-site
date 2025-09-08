@@ -22,7 +22,6 @@ type Track = {
   title: string;
   cover?: string;
   description?: string;
-  // object like {spotify: 'https://...', apple: 'https://...'}
   links?: Partial<Record<PlatformKey, string | null | undefined>> | Array<{
     key?: string;
     url?: string | null | undefined;
