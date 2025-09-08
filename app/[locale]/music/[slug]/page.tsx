@@ -1,29 +1,35 @@
 import {notFound} from 'next/navigation';
-import {getTranslations} from 'next-intl/server';
-import {tracks} from '@/data/tracks';
-import TrackCard from '@/components/TrackCard';
 import Link from 'next/link';
+import TrackCard from '@/components/TrackCard';
 import TrackJsonLd from '@/components/TrackJsonLd';
 
-type Params = {locale: 'ar'|'en'|'fr'; slug: string};
+type Locale = 'ar' | 'en' | 'fr';
+type Params = { locale: Locale; slug: string };
 
-export async function generateStaticParams() {
-  return tracks.map(t => ({slug: t.slug, locale: 'en'}));
-}
+export default async function TrackPage({
+  params
+}: {
+  params: Promise<Params>;
+}) {
+  const {locale, slug} = await params;
 
-export default async function TrackPage({params}:{params: Params}){
-  const t = await getTranslations('nav');
-  const tr = tracks.find(tt => tt.slug === params.slug);
+  const tracks = (await import('@/data/tracks')).default as any[];
+  const tr = tracks.find((t) => t.slug === slug);
   if (!tr) notFound();
 
-  const displayTitle = (tr as any)?.titles?.[params.locale] ?? tr.title;
+  const displayTitle: string =
+    (tr as any).titles?.[locale] ?? (tr as any).title ?? slug;
 
   return (
     <section className="container py-10 md:py-16 grid gap-6">
       <h2>{displayTitle}</h2>
-      <TrackCard track={tr as any}/>
-      <div><Link href="/music" className="btn btn-ghost no-underline">← {t('music')}</Link></div>
-      <TrackJsonLd track={tr as any} locale={params.locale} />
+      <TrackCard track={tr as any} />
+      <div>
+        <Link href="/music" className="btn btn-ghost no-underline">
+          ← Music
+        </Link>
+      </div>
+      <TrackJsonLd track={tr as any} locale={locale} />
     </section>
   );
 }
