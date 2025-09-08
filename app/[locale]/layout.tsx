@@ -1,43 +1,38 @@
-import type { Metadata } from 'next';
 import '../globals.css';
-import {routing} from '@/i18n/routing';
+import NavBar from '../../components/NavBar';
+import Footer from '../../components/Footer';
+import Script from 'next/script';
 import {setRequestLocale} from 'next-intl/server';
 import {notFound} from 'next/navigation';
-import NavBar from '@/components/NavBar';
-import Footer from '../../components/Footer;
-import Script from 'next/script';
+import type {ReactNode} from 'react';
 
-export const metadata: Metadata = {
-  title: 'Tahir Salami',
-  description: 'Official site for artist Tahir Salami',
-};
+const LOCALES = ['ar', 'en', 'fr'] as const;
 
-type Locale = (typeof routing.locales)[number];
-
-export default function RootLayout({children, params}:{children: React.ReactNode; params: {locale: Locale}}) {
+export default function RootLayout({
+  children,
+  params
+}: {
+  children: ReactNode;
+  params: { locale: string };
+}) {
   const locale = params.locale;
 
-  if (!routing.locales.includes(locale)) notFound();
-
-  setRequestLocale(locale);
+  if (!LOCALES.includes(locale as any)) notFound();
+  setRequestLocale(locale as any);
 
   return (
-    <html lang={locale}>
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <body>
         <NavBar />
         {children}
         <Footer />
-        {/* Google Analytics */}
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-Q1CKHXW9EK" strategy="afterInteractive" />
-        <Script id="ga-setup" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-Q1CKHXW9EK');
-          `}
-        </Script>
+        <Script
+          defer
+          data-domain="tahirsalami.com"
+          src="https://plausible.io/js/script.js"
+        />
       </body>
     </html>
   );
 }
+
