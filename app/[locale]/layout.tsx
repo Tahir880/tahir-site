@@ -6,19 +6,20 @@ import {setRequestLocale} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 import type {ReactNode} from 'react';
 
-const LOCALES = ['ar', 'en', 'fr'] as const;
+type Locale = 'ar' | 'en' | 'fr';
+const LOCALES: readonly Locale[] = ['ar', 'en', 'fr'] as const;
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params
 }: {
   children: ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: Locale }>;
 }) {
-  const locale = params.locale;
+  const {locale} = await params;
 
-  if (!LOCALES.includes(locale as any)) notFound();
-  setRequestLocale(locale as any);
+  if (!LOCALES.includes(locale)) notFound();
+  setRequestLocale(locale);
 
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
@@ -35,4 +36,3 @@ export default function RootLayout({
     </html>
   );
 }
-
