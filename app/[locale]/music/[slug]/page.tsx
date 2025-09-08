@@ -11,14 +11,21 @@ export default async function TrackPage({
 }: {
   params: Promise<Params>;
 }) {
-  const {locale, slug} = await params;
+  const { locale, slug } = await params;
 
-  const tracks = (await import('@/data/tracks')).default as any[];
-  const tr = tracks.find((t) => t.slug === slug);
+  // Handle both default and named exports from '@/data/tracks'
+  const mod = await import('@/data/tracks');
+  const tracks: any[] =
+    (mod as any).default ??
+    (mod as any).tracks ??
+    (mod as any).TRACKS ??
+    (mod as any).data ??
+    [];
+
+  const tr = tracks.find((t: any) => t.slug === slug);
   if (!tr) notFound();
 
-  const displayTitle: string =
-    (tr as any).titles?.[locale] ?? (tr as any).title ?? slug;
+  const displayTitle: string = tr.titles?.[locale] ?? tr.title ?? slug;
 
   return (
     <section className="container py-10 md:py-16 grid gap-6">
