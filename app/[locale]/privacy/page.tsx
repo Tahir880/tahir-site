@@ -1,0 +1,1 @@
+export default function Page(){return(<section className='container py-10 md:py-16 space-y-4 max-w-3xl'><h2>Privacy Policy</h2><p className='text-white/70'>Minimal data via contact form, analytics via Plausible (cookieless).</p></section>);}

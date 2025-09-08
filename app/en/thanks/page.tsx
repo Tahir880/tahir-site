@@ -1,0 +1,1 @@
+export default function Page(){return(<section className='container py-16 text-center space-y-3'><h2>Thanks for your message</h2><p className='text-white/70'>We received your inquiry and will get back to you shortly.</p></section>);}

@@ -1,0 +1,38 @@
+{
+  "common": {
+    "brand": "Tahir Salami",
+    "allPlatforms": "Listen on",
+    "platform": {
+      "spotify": "Spotify",
+      "youtube": "YouTube",
+      "youtubeMusic": "YouTube Music",
+      "soundcloud": "SoundCloud",
+      "anghami": "Anghami",
+      "apple": "Apple Music",
+      "deezer": "Deezer",
+      "amazon": "Amazon Music",
+      "itunes": "iTunes",
+      "tidal": "TIDAL",
+      "pandora": "Pandora",
+      "napster": "Napster",
+      "boomplay": "Boomplay"
+    }
+  },
+  "hero": {
+    "heading": "Moroccan-Palestinian singer & composer",
+    "sub": "Traditional Andalusi meets modern soundscapes."
+  },
+  "nav": {
+    "home": "Home",
+    "music": "Music",
+    "epk": "EPK",
+    "contact": "Contact"
+  },
+  "contactForm": {
+    "name": "Your name",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "Your message",
+    "send": "Send"
+  }
+}

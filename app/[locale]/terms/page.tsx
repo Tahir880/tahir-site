@@ -1,0 +1,1 @@
+export default function Page(){return(<section className='container py-10 md:py-16 space-y-4 max-w-3xl'><h2>Terms of Service</h2><p className='text-white/70'>By using this website, you agree to these terms.</p></section>);}
