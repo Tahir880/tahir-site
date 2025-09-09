@@ -10,8 +10,6 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Logs with stack in production
-    // eslint-disable-next-line no-console
     console.error('GlobalError', error, error?.stack);
   }, [error]);
 
