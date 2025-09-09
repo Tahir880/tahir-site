@@ -7,6 +7,7 @@ import {getMessages} from 'next-intl/server';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import ErrorCatcher from '@/components/ErrorCatcher';
+import ClientErrorLogger from '@/components/ClientErrorLogger';
 import Script from 'next/script';
 import '@/app/globals.css';
 
@@ -36,8 +37,9 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} suppressHydrationWarning>
       <body>
+        <ClientErrorLogger />
         <NextIntlClientProvider messages={messages} locale={locale}>
           <ErrorCatcher name="NavBar">
             <NavBar />
