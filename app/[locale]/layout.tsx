@@ -1,37 +1,63 @@
-import '../globals.css';
-import NavBar from '../../components/NavBar';
-import Footer from '../../components/Footer';
-import Script from 'next/script';
-import {setRequestLocale} from 'next-intl/server';
+import type {Metadata} from 'next';
 import {notFound} from 'next/navigation';
-import type {ReactNode} from 'react';
+import {routing} from '@/i18n/routing';
 
-type Locale = 'ar' | 'en' | 'fr';
-const LOCALES: readonly Locale[] = ['ar', 'en', 'fr'] as const;
+import {setRequestLocale} from 'next-intl/server';
+import {NextIntlClientProvider} from 'next-intl';
+import {getMessages} from 'next-intl/server';
+
+import NavBar from '@/components/NavBar';
+import Footer from '@/components/Footer';
+import Script from 'next/script';
+
+import '@/app/globals.css';
+
+export const metadata: Metadata = {
+  title: 'Tahir',
+  description: 'Official website'
+};
+
+export async function generateStaticParams() {
+  return routing.locales.map((locale) => ({locale}));
+}
 
 export default async function RootLayout({
   children,
   params
 }: {
-  children: ReactNode;
-  params: Promise<{ locale: Locale }>;
+  children: React.ReactNode;
+  params: Promise<{locale: 'ar' | 'en' | 'fr'}>;
 }) {
   const {locale} = await params;
 
-  if (!LOCALES.includes(locale)) notFound();
+  if (!routing.locales.includes(locale)) {
+    notFound();
+  }
+
   setRequestLocale(locale);
+
+  const messages = await getMessages();
 
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <body>
-        <NavBar />
-        {children}
-        <Footer />
-        <Script
-          defer
-          data-domain="tahirsalami.com"
-          src="https://plausible.io/js/script.js"
-        />
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          <NavBar />
+          {children}
+          <Footer />
+
+          <Script
+            id="org-jsonld"
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Person',
+                name: 'Tahir'
+              })
+            }}
+          />
+        </NextIntlClientProvider>
       </body>
     </html>
   );
