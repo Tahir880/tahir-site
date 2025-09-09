@@ -3,8 +3,22 @@ import {routing} from './routing';
 
 export default getRequestConfig(async ({locale}) => {
   if (!routing.locales.includes(locale as any)) {
-    throw new Error(`Unsupported locale: ${locale}`);
+    locale = routing.defaultLocale as any;
   }
-  const messages = (await import(`../messages/${locale}.json`)).default;
-  return {messages};
+
+  let messages: any = {};
+  try {
+    messages = (await import(`@/messages/${locale}.json`)).default;
+  } catch {
+    messages = (await import(`@/messages/${routing.defaultLocale}.json`)).default;
+  }
+
+  return {
+    messages,
+    onError() {
+    },
+    getMessageFallback({namespace, key}) {
+      return namespace ? `${namespace}.${key}` : key;
+    }
+  };
 });
